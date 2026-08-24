@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Grid</title>
+</head>
+<style>
+    body{
+        padding: 35px;
+    }
+    .container--1{
+        background-color: #ddd;
+        font-family: sans-serif;
+        font-size: 40px;
+        margin: 40px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-rows: 150px 100px 150px;
+        gap:30px;
+        column-gap: 10px;
+        row-gap: 20px;
+    }
+    .el--1{
+        grid-column: 1;
+        grid-row: 1 / span 3;
+        background-color: blueviolet;
+    }
+    .el--2{
+        grid-column: 2 / span 3;
+        grid-row: 2;
+        background-color: orangered;
+    }
+    .el--3{
+        grid-column: 3;
+        grid-row: 1;
+        background-color:green
+    }
+    .el--4{
+        grid-column: 4;
+        grid-row: 1;
+        background-color: goldenrod;
+    }
+    .el--5{
+        grid-column:3;
+        grid-row:3;
+        background-color: palevioletred;
+    }
+    .el--6{
+        grid-column: 2;
+        grid-row:3;
+        background-color: steelblue;
+    }
+    .el--7{
+        grid-column:4;
+        grid-row:3;
+        background-color:yellow;
+    }
+    .el--8{
+        grid-column:2;
+        grid-row:1;
+        background-color: crimson;
+    }
+    .container--2{
+        background-color: #ddd;
+        font-family: sans-serif;
+        font-size: 40px;
+        margin: 40px;
+        width: 900px;
+        height: 600px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 250px 100px;
+        gap:50px;
+        justify-content: space-between;
+        align-content: center;
+        align-items: center;
+        justify-items: center;
+    }
+    .item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 28px;
+      color: #000;
+      width: 60px;
+      height: 60px;
+    }
+    .box1 {
+      grid-column: 1;
+      grid-row: 1;
+      background-color: blueviolet;
+    }
+
+    .box3 {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      height: 180px;
+      background-color: green;
+    }
+
+    .box4 {
+      grid-column: 3;
+      grid-row: 1;
+      background-color: goldenrod;
+    }
+
+    .box5 {
+      grid-column: 1;
+      grid-row: 2;
+      background-color: orangered;
+    }
+
+    .box6 {
+      grid-column: 2;
+      grid-row: 2;
+      background-color: steelblue;
+    }
+
+    .box7 {
+      grid-column: 3;
+      grid-row: 2;
+      background-color: yellow;
+    }
+</style>
+<body>
+    <div class="container--1">
+        <div class="el el--1">(1) HTML</div>
+        <div class="el el--2">(2) and</div>
+        <div class="el el--3">(3) CSS</div>
+        <div class="el el--4">(4) are</div>
+        <div class="el el--5">(5) amazing</div>
+        <div class="el el--6">(6) languages</div>
+        <div class="el el--7">(7) to</div>
+        <div class="el el--8">(8) learn</div>
+    </div>
+    <div class="container--2">
+        <div class="item box1">(1)</div>
+        <div class="item box3">(3)</div>
+        <div class="item box4">(4)</div>
+        <div class="item box5">(5)</div>
+        <div class="item box6">(6)</div>
+        <div class="item box7">(7)</div>
+    </div>
+</body>
+</html>
