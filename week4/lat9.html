@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    function sapaDenganSalam(nama, salam = "Halo") {
+        return '${Salam}, ${nama}!';
+    }
+    console.log(sapaDenganSalam("Budi"));
+    console.log(sapaDenganSalam("Budi","Selamat Pagi"))
+    function jumlahkanSemua(...angka) {
+        return angka.reduce((total,n) => total + n,0);
+    }
+    console.log(jumlahkanSemua(1,2,3)); //6
+    console.log(jumlahkanSemua(5,10,15,20)); //50
+</script>
+</html>
