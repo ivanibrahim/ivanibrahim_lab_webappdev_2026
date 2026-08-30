@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p id="angka">0</p>
+    <button id="tambah">+1</button>
+</body>
+<script>
+    const btn=document.getElementById("tambah");
+    const bil=document.getElementById("angka");
+    let jumlah=0;
+    btn.addEventListener("click",()=>{
+        jumlah++
+        bil.textContent = jumlah;
+    });
+</script>
+</html>

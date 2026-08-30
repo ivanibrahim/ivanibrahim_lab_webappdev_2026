@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="password" id="input-password" placeholder="Masukkan password">
+    <button id="btn-toggle">Tampilkan</button>
+</body>
+<script>
+    const inputPassword= document.getElementById("input-password");
+    const btnToggle= document.getElementById("btn-toggle");
+    btnToggle.addEventListener("click", () => {
+        const typeSaatIni=inputPassword.getAttribute("type")
+
+        if (typeSaatIni==="password") {
+            inputPassword.setAttribute("type","text");
+            btnToggle.textContent = "Sembunyikan";
+        }
+        else {
+            inputPassword.setAttribute("type","password");
+            btnToggle.textContent = "Tampilkan";
+        }
+    })
+</script>
+</html>

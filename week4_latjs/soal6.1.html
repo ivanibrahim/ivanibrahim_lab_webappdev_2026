@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p id="ubah-warna">Klik tombol untuk mengubah warna</p>
+    <button id="btn-warna">Ubah Warna</button>
+</body>
+<script>
+    const btn=document.getElementById("btn-warna");
+    const paragraph=document.getElementById("ubah-warna");
+    btn.addEventListener("click", () => {
+        paragraph.style.color="red";
+        paragraph.textContent="Warna sudah diubah!";
+    });
+</script>
+</html>
