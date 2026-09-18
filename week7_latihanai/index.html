@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>TokoLab</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  :root{
+    --bg:#eef1f0;
+    --card-bg:#f4f6f5;
+    --panel-bg:#e9edec;
+    --border:#dbe1df;
+    --text:#1f2a27;
+    --muted:#6b7570;
+    --green:#3c6b5a;
+    --green-dark:#2f5548;
+    --tag-bg:#bfe9d8;
+    --tag-text:#1f6b4e;
+    --price:#1f2a27;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    padding:32px 40px 60px;
+  }
+  .header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    background:var(--panel-bg);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:24px 28px;
+    margin-bottom:24px;
+  }
+  .header h1{
+    margin:0 0 4px;
+    font-size:22px;
+    font-weight:700;
+  }
+  .header p{
+    margin:0;
+    color:var(--muted);
+    font-size:14px;
+  }
+  .guide-btn{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:8px 18px;
+    font-size:13px;
+    color:var(--text);
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .intro{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:18px 24px;
+    margin-bottom:24px;
+    font-size:14px;
+    color:var(--text);
+  }
+  .layout{
+    display:grid;
+    grid-template-columns: 1fr 340px;
+    gap:24px;
+    align-items:start;
+  }
+  .catalog-panel, .cart-panel{
+    background:var(--card-bg);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:24px;
+  }
+  .catalog-panel h2{
+    margin:0 0 16px;
+    font-size:20px;
+    font-weight:700;
+    letter-spacing:0.02em;
+  }
+  .controls{
+    display:flex;
+    gap:12px;
+    margin-bottom:12px;
+  }
+  .controls input[type="text"]{
+    flex:1;
+    padding:10px 14px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    font-size:14px;
+    background:#fff;
+  }
+  .controls select{
+    padding:10px 14px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    font-size:14px;
+    background:#fff;
+    color:var(--text);
+  }
+  .result-count{
+    font-size:13px;
+    color:var(--muted);
+    margin-bottom:16px;
+  }
+  .product-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:16px;
+  }
+  .product-card{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px;
+    display:flex;
+    flex-direction:column;
+  }
+  .product-letter{
+    font-size:26px;
+    font-weight:700;
+    margin-bottom:8px;
+  }
+  .tag{
+    display:inline-block;
+    background:var(--tag-bg);
+    color:var(--tag-text);
+    font-size:11px;
+    font-weight:600;
+    padding:3px 10px;
+    border-radius:999px;
+    margin-bottom:10px;
+    width:fit-content;
+  }
+  .product-name{
+    font-size:15px;
+    font-weight:600;
+    margin:0 0 8px;
+  }
+  .product-price{
+    font-size:16px;
+    font-weight:700;
+    color:var(--price);
+    margin:0 0 4px;
+  }
+  .product-stock{
+    font-size:12px;
+    color:var(--muted);
+    margin:0 0 14px;
+  }
+  .product-stock.habis{
+    color:#c0392b;
+  }
+  .btn-add{
+    margin-top:auto;
+    background:var(--green);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    padding:12px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .btn-add:hover{
+    background:var(--green-dark);
+  }
+  .btn-add.disabled{
+    background:#c9cfcc;
+    color:#8a918d;
+    cursor:not-allowed;
+  }
+  .quantity-control{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:auto;
+    background:var(--green);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .quantity-control button{
+    width:40px;
+    height:40px;
+    border:0;
+    background:transparent;
+    color:#fff;
+    font-size:22px;
+    line-height:1;
+    cursor:pointer;
+  }
+  .quantity-control button:hover{
+    background:var(--green-dark);
+  }
+  .quantity-control button:disabled{
+    background:#567b6d;
+    color:#b8c9c1;
+    cursor:not-allowed;
+  }
+  .quantity-control span{
+    color:#fff;
+    font-size:14px;
+    font-weight:600;
+  }
+  .cart-panel h2{
+    margin:0 0 20px;
+    font-size:19px;
+    font-weight:700;
+    letter-spacing:0.02em;
+  }
+  .cart-empty{
+    text-align:center;
+    color:var(--muted);
+    font-size:14px;
+    padding:20px 0 24px;
+  }
+  .shipping-note{
+    font-size:13px;
+    margin-bottom:8px;
+  }
+  .progress-bar{
+    height:6px;
+    background:#dfe4e2;
+    border-radius:999px;
+    overflow:hidden;
+    margin-bottom:20px;
+  }
+  .progress-bar span{
+    display:block;
+    height:100%;
+    width:8%;
+    background:var(--green);
+    border-radius:999px;
+  }
+  .voucher-row{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+  }
+  .voucher-row input{
+    flex:1;
+    padding:10px 14px;
+    border:1px solid var(--border);
+    border-radius:10px;
+    font-size:14px;
+    background:#fff;
+  }
+  .voucher-row button{
+    background:#fff;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px 18px;
+    font-size:14px;
+    cursor:pointer;
+  }
+  .summary-line{
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+    margin-bottom:10px;
+    color:var(--text);
+  }
+  .summary-line.total{
+    font-weight:700;
+    font-size:16px;
+    border-top:1px solid var(--border);
+    padding-top:14px;
+    margin-top:6px;
+  }
+  .checkout-btn{
+    width:100%;
+    background:#c9cfcc;
+    color:#7d857f;
+    border:none;
+    border-radius:10px;
+    padding:14px;
+    font-size:15px;
+    font-weight:600;
+    margin-top:18px;
+    cursor:not-allowed;
+  }
+  .order-note{
+    text-align:center;
+    font-size:13px;
+    color:var(--muted);
+    margin-top:14px;
+    line-height:1.5;
+  }
+  @media (max-width: 900px){
+    .layout{grid-template-columns:1fr;}
+    .product-grid{grid-template-columns:repeat(2,1fr);}
+  }
+  @media (max-width: 560px){
+    .product-grid{grid-template-columns:1fr;}
+    body{padding:20px;}
+    .header{flex-direction:column;gap:12px;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div>
+      <h1>TokoLab</h1>
+      <p>Praktikum Web — Digital Business Technology</p>
+    </div>
+    <button class="guide-btn">Tampilkan panduan</button>
+  </div>
+
+  <div class="intro">Inilah hasil akhir yang harus kalian bangun.</div>
+
+  <div class="layout">
+    <div class="catalog-panel">
+      <h2>KATALOG PRODUK</h2>
+      <div class="controls">
+        <input type="text" placeholder="Cari nama produk...">
+        <select>
+          <option>Semua Kategori</option>
+        </select>
+        <select>
+          <option>Urutkan: Default</option>
+        </select>
+      </div>
+      <div class="result-count">9 produk ditampilkan dari total 9</div>
+
+      <div class="product-grid">
+        <div class="product-card">
+          <div class="product-letter">K</div>
+          <span class="tag">Aksesoris</span>
+          <p class="product-name">Keyboard Mekanik</p>
+          <p class="product-price">Rp450.000</p>
+          <p class="product-stock">Stok tersedia: 12</p>
+          <button class="btn-add">Tambah</button>
+        </div>
+
+        <div class="product-card">
+          <div class="product-letter">M</div>
+          <span class="tag">Aksesoris</span>
+          <p class="product-name">Mouse Wireless</p>
+          <p class="product-price">Rp185.000</p>
+          <p class="product-stock">Stok tersedia: 30</p>
+          <button class="btn-add">Tambah</button>
+        </div>
+
+        <div class="product-card">
+          <div class="product-letter">H</div>
+          <span class="tag">Audio</span>
+          <p class="product-name">Headset Gaming</p>
+          <p class="product-price">Rp320.000</p>
+          <p class="product-stock">Stok tersedia: 8</p>
+          <button class="btn-add">Tambah</button>
+        </div>
+
+        <div class="product-card">
+          <div class="product-letter">E</div>
+          <span class="tag">Audio</span>
+          <p class="product-name">Earbuds TWS</p>
+          <p class="product-price">Rp275.000</p>
+          <p class="product-stock habis">Stok habis</p>
+          <button class="btn-add disabled" disabled>Habis</button>
+        </div>
+
+        <div class="product-card">
+          <div class="product-letter">F</div>
+          <span class="tag">Penyimpanan</span>
+          <p class="product-name">Flashdisk 64GB</p>
+          <p class="product-price">Rp95.000</p>
+          <p class="product-stock">Stok tersedia: 45</p>
+          <button class="btn-add">Tambah</button>
+        </div>
+
+        <div class="product-card">
+          <div class="product-letter">S</div>
+          <span class="tag">Penyimpanan</span>
+          <p class="product-name">SSD Eksternal 1TB</p>
+          <p class="product-price">Rp1.150.000</p>
+          <p class="product-stock">Stok tersedia: 5</p>
+          <button class="btn-add">Tambah</button>
+        </div>
+
+        <div class="product-card">
+          <div class="product-letter">D</div>
+          <span class="tag">Display</span>
+          <p class="product-name">Monitor 24 inci</p>
+          <p class="product-price">Rp1.750.000</p>
+          <p class="product-stock">Stok tersedia: 7</p>
+          <button class="btn-add">Tambah</button>
+        </div>
+
+        <div class="product-card">
+          <div class="product-letter">W</div>
+          <span class="tag">Display</span>
+          <p class="product-name">Webcam Full HD</p>
+          <p class="product-price">Rp410.000</p>
+          <p class="product-stock">Stok tersedia: 15</p>
+          <button class="btn-add">Tambah</button>
+        </div>
+
+        <div class="product-card">
+          <div class="product-letter">P</div>
+          <span class="tag">Aksesoris</span>
+          <p class="product-name">Mousepad XL</p>
+          <p class="product-price">Rp95.000</p>
+          <p class="product-stock">Stok tersedia: 25</p>
+          <button class="btn-add">Tambah</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cart-panel">
+      <h2>KERANJANG</h2>
+      <div class="cart-empty" id="cart-empty">Keranjang masih kosong.</div>
+
+      <div class="shipping-note" id="shipping-note">Belanja Rp300.000 lagi untuk gratis ongkir.</div>
+      <div class="progress-bar"><span id="shipping-progress"></span></div>
+
+      <div class="voucher-row">
+        <input type="text" placeholder="Kode voucher">
+        <button>Pakai</button>
+      </div>
+
+      <div class="summary-line">
+        <span>Subtotal</span><span id="subtotal">Rp0</span>
+      </div>
+      <div class="summary-line">
+        <span>Diskon</span><span>-Rp0</span>
+      </div>
+      <div class="summary-line">
+        <span>Ongkir</span><span>Gratis</span>
+      </div>
+      <div class="summary-line total">
+        <span>Total</span><span id="total">Rp0</span>
+      </div>
+
+      <button class="checkout-btn" id="checkout-btn" disabled>Checkout</button>
+
+      <div class="order-note" id="order-note">Tambahkan produk untuk mulai berbelanja.</div>
+    </div>
+  </div>
+
+  <script>
+    const freeShippingMinimum = 300000;
+    let cartTotal = 0;
+    let cartItemCount = 0;
+
+    const formatRupiah = (amount) => `Rp${amount.toLocaleString('id-ID')}`;
+    const cartEmpty = document.querySelector('#cart-empty');
+    const shippingNote = document.querySelector('#shipping-note');
+    const shippingProgress = document.querySelector('#shipping-progress');
+    const subtotal = document.querySelector('#subtotal');
+    const total = document.querySelector('#total');
+    const checkoutButton = document.querySelector('#checkout-btn');
+    const orderNote = document.querySelector('#order-note');
+
+    function updateCart() {
+      const remaining = Math.max(freeShippingMinimum - cartTotal, 0);
+      const progress = Math.min((cartTotal / freeShippingMinimum) * 100, 100);
+
+      cartEmpty.hidden = cartItemCount > 0;
+      subtotal.textContent = formatRupiah(cartTotal);
+      total.textContent = formatRupiah(cartTotal);
+      shippingProgress.style.width = `${progress}%`;
+      checkoutButton.disabled = cartItemCount === 0;
+      checkoutButton.style.cursor = cartItemCount === 0 ? 'not-allowed' : 'pointer';
+
+      if (remaining > 0) {
+        shippingNote.textContent = `Belanja ${formatRupiah(remaining)} lagi untuk gratis ongkir.`;
+      } else {
+        shippingNote.textContent = 'Selamat, kamu mendapatkan gratis ongkir.';
+      }
+
+      orderNote.textContent = cartItemCount > 0
+        ? `${cartItemCount} barang di keranjang senilai ${formatRupiah(cartTotal)}.`
+        : 'Tambahkan produk untuk mulai berbelanja.';
+    }
+
+    document.querySelectorAll('.product-card').forEach((productCard) => {
+      const addButton = productCard.querySelector('.btn-add:not([disabled])');
+
+      if (!addButton) return;
+
+      const priceText = productCard.querySelector('.product-price').textContent;
+      const price = Number(priceText.replace(/[^0-9]/g, ''));
+      const stockElement = productCard.querySelector('.product-stock');
+      const stockText = stockElement.textContent.match(/\d+/);
+      const maxStock = stockText ? Number(stockText[0]) : 0;
+      let quantity = 0;
+
+      function updateStockDisplay() {
+        stockElement.textContent = `Stok tersedia: ${maxStock - quantity}`;
+        stockElement.classList.toggle('habis', quantity === maxStock);
+      }
+
+      function renderQuantityControl() {
+        const quantityControl = document.createElement('div');
+        quantityControl.className = 'quantity-control';
+        quantityControl.innerHTML = `
+          <button type="button" aria-label="Kurangi jumlah">-</button>
+          <span>${quantity}</span>
+          <button type="button" aria-label="Tambah jumlah">+</button>
+        `;
+        const decreaseButton = quantityControl.querySelector('button:first-child');
+        const increaseButton = quantityControl.querySelector('button:last-child');
+
+        increaseButton.disabled = quantity >= maxStock;
+        increaseButton.title = increaseButton.disabled ? 'Stok sudah maksimal' : 'Tambah jumlah';
+
+        decreaseButton.addEventListener('click', () => {
+          quantity -= 1;
+          cartTotal -= price;
+          cartItemCount -= 1;
+
+          if (quantity === 0) {
+            quantityControl.replaceWith(addButton);
+          } else {
+            quantityControl.querySelector('span').textContent = quantity;
+            increaseButton.disabled = false;
+            increaseButton.title = 'Tambah jumlah';
+          }
+
+          updateStockDisplay();
+          updateCart();
+        });
+
+        increaseButton.addEventListener('click', () => {
+          if (quantity >= maxStock) return;
+
+          quantity += 1;
+          cartTotal += price;
+          cartItemCount += 1;
+          quantityControl.querySelector('span').textContent = quantity;
+          increaseButton.disabled = quantity >= maxStock;
+          increaseButton.title = increaseButton.disabled ? 'Stok sudah maksimal' : 'Tambah jumlah';
+          updateStockDisplay();
+          updateCart();
+        });
+
+        addButton.replaceWith(quantityControl);
+      }
+
+      addButton.addEventListener('click', () => {
+        quantity = 1;
+        cartTotal += price;
+        cartItemCount += 1;
+        renderQuantityControl();
+        updateStockDisplay();
+        updateCart();
+      });
+    });
+  </script>
+
+</body>
+</html>
